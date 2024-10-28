@@ -1,8 +1,12 @@
+import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from collections import defaultdict
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from datetime import date
+from dotenv import load_dotenv
+from pathlib import Path
 import pandas as pd
+import argparse
 
 
 def write_correctly_year(date):
@@ -15,8 +19,24 @@ def write_correctly_year(date):
 
 
 def main():
-    wine_sale_path = r"C:\Users\Lekantras\Downloads\wine3.xlsx"
-    new_df = pd.read_excel(wine_sale_path)
+    load_dotenv()
+    parser = argparse.ArgumentParser(
+        description='Введите путь до файла'
+    )
+    parser.add_argument(
+        '-f', '--file',
+        help='Введите путь до файла',
+        default=os.getenv('WINE_DEFAULT_PATH'),
+    )
+    args = parser.parse_args()
+    file_name = args.file
+    if not file_name:
+        print('Ошибка. Укажите путь к файлу')
+        return
+
+    file_path = Path(file_name)
+    print(file_path)
+    new_df = pd.read_excel(file_path)
     wines_range_not_nan = new_df.fillna(0)
     converted_wines_range = wines_range_not_nan.to_dict(orient='records')
 
@@ -47,4 +67,5 @@ def main():
     server.serve_forever()
 
 
-main()
+if __name__ == '__main__':
+    main()
