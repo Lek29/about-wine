@@ -35,7 +35,6 @@ def main():
         return
 
     file_path = Path(file_name)
-    print(file_path)
     new_df = pd.read_excel(file_path)
     wines_range_not_nan = new_df.fillna(0)
     converted_wines_range = wines_range_not_nan.to_dict(orient='records')
