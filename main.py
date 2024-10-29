@@ -50,10 +50,10 @@ def main():
     )
 
     template = env.get_template('template.html')
-    fondation_year = 1920
+    foundation_year = 1920
     year_now = date.today().year
 
-    difference_year = year_now - fondation_year
+    difference_year = year_now - foundation_year
     rendered_page = template.render(
         difference_age_message=f'Уже {write_correctly_year(difference_year)} с вами',
         grouped_wines=grouped_type_drink
